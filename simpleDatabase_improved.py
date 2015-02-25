@@ -103,10 +103,6 @@ class Simpletables:
 		self.transaction = []
 
 # Test cases 
-# Need to improve: StdIn 
-
-#['SET','GET','UNSET','END','NUMEQUALTO','BEGIN','ROLLBACK','COMMIT']: 
-
 if __name__ == "__main__":
 	data = Simpletables()
 	f = open('Example5.txt','r')
