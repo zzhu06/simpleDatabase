@@ -1,87 +1,110 @@
+'''
+******************************************** 
+Code challenge from Thumbtack 
+Implement an in-memory tables
+********************************************
+'''
 
-#stdin; shell
-#EOF
+# Improved version: Log(N) time for worst case, but cuased more lines and extra space 
+
+# remaining problem: stdin; shell; EOF
 
 # Questions  for engineer: extra space for counting? 
 
-class SimpleDatabase: 
+class Simpletables: 
 
+	# Initialize the database 
 	def __init__(self):
-		# database has the current value of names 
-		# history records the value of name from last time 
-		self.database = {}
-		self.history = []
+		# table stores paris of names and values 
+		# transaction stores list of historial trasactions 
+		# count stores count of values 
+		self.tables = {}
+		self.transaction = []
 		self.count = {}
 
+	# Set the variable name to the value
 	def SET(self, name, value): 
-		if self.history:
-			if name not in self.database: 
-				self.history[0][name] = 'NULL'
+		# record the most RECENT value of the name 
+		# this is for convinience of the ROLLBACK function
+		if self.transaction:
+			if name not in self.tables: 
+				self.transaction[0][name] = 'NULL'
 			else: 
-				self.history[0][name] = self.database[name]
+				self.transaction[0][name] = self.tables[name]
 
-
+		# change the counting number in count 
 		if value not in self.count.keys(): 
 			self.count[value] = 1 
 		else: 
 			self.count[value] += 1 
 
-		if name in self.database: 
-			self.count[self.database[name]] -= 1
+		if name in self.tables: 
+			self.count[self.tables[name]] -= 1
 
-		self.database[name] = value 
+		self.tables[name] = value 
 		
-
+	# Get the value of the name
 	def GET(self, name):
-		if name not in self.database:
+		if name not in self.tables:
 			print 'NULL'
 		else: 
-			print self.database[name]
+			print self.tables[name]
 
+	# Unset the name 
 	def UNSET(self, name):
-		# if inside of a history, record the value befroe unset
-		if self.history:
-			self.history[0][name] = self.database[name]
+		# change the historial value when unset  
+		if self.transaction:
+			self.transaction[0][name] = self.tables[name]
 
-		self.count[self.database[name]] -= 1 
+		# change the counting number when unset 
+		self.count[self.tables[name]] -= 1 
 
-		self.database[name] = 'NULL'
+		# set the value of the name to NULL
+		self.tables[name] = 'NULL'
 
-	# How to test the end of the program; import sys; sys.exit()
+	# Exit the program
 	def END(self):
 		exit()
 
-	# Improve to Log(N) worst time; Sorting and binary search?  
+	# Count the number of variables
+	# Log(N) time but use extra space 
+	# Suggestion for improving: sorting and binary search?  
 	def NUMEQUALTO(self, value):
 		if value not in self.count:
 			print 0 
 		else: 
 			print self.count[value]
 
-	# BEGIN a new history
+	# BEGIN a new transaction block 
 	def BEGIN(self):
-		self.history.insert(0,{})
+		self.transaction.insert(0,{})
 
+	# Undo all of the commands in the recent transaction 
 	def ROLLBACK(self):
-		if self.history == []:
-			print 'NO history'
+		if self.transaction == []:
+			print 'NO transaction'
 		else: 
-			for name in self.history[0]: 
-				self.database[name] = self.history[0][name]
+			# reset the value of the name in tables
+			for name in self.transaction[0]: 
+				self.tables[name] = self.transaction[0][name]
 
-			self.count[self.database[name]] += 1
+			# change the counting number when Rollback 
+			self.count[self.tables[name]] += 1
 
-			self.history.pop(0)
+			# delete the recent transaction
+			self.transaction.pop(0)
 
+	# Close all transaction blocks
+	# Set the transaction to an empty list
 	def COMMIT(self):
-		self.history = []
+		self.transaction = []
 
-	# Part II: history block? 	
-
+# Test cases 
+# Need to improve: StdIn 
 if __name__ == "__main__":
 	'''
 	#Ex. 5
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.SET('a',10)
 	data.BEGIN()
 	data.NUMEQUALTO(10)
@@ -93,7 +116,7 @@ if __name__ == "__main__":
 	data.END()
 	
 	# Ex. 4
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.SET('a',50)
 	data.BEGIN()
 	data.GET('a') 
@@ -108,7 +131,7 @@ if __name__ == "__main__":
 	data.END()
 	
 	# Ex. 3
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.BEGIN()
 	data.SET('a',30)
 	data.BEGIN()
@@ -119,7 +142,7 @@ if __name__ == "__main__":
 	data.END()
 	
 	# Ex. 2
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.BEGIN()
 	data.SET('a',10)
 	data.GET('a')
@@ -133,7 +156,7 @@ if __name__ == "__main__":
 	data.END()
 
 	# Ex. 1
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.SET('a',10)
 	data.SET('b',10)
 	data.NUMEQUALTO(10)
@@ -143,7 +166,7 @@ if __name__ == "__main__":
 	data.END()
 
 	# Ex. 0
-	data = SimpleDatabase()
+	data = Simpletables()
 	data.SET('a',10)
 	data.GET('a')
 	data.UNSET('a')

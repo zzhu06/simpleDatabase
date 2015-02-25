@@ -42,7 +42,8 @@ class SimpleDatabase:
 		# change the historial value when unset  
 		if self.transaction:
 			self.transaction[0][name] = self.tables[name]
-
+			
+		# set the value of the name to NULL		
 		self.tables[name] = 'NULL'
 
 	# Exit the program
