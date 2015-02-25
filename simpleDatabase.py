@@ -4,6 +4,7 @@ Code challenge from Thumbtack
 Implement an in-memory tables
 ********************************************
 '''
+import sys
 
 class SimpleDatabase: 
 
@@ -98,13 +99,14 @@ class SimpleDatabase:
 if __name__ == "__main__":
 
 	data = SimpleDatabase()
+	#cmd = sys.stdin.readline()
 
 	print 'Welcome to Julia\'s SimpleDatabase'
-	print 'You can enter commands: SET, GET, UNSET, END, NUMEQUALTO, BEGIN, ROLLBACK and COMMIT following with name and value'
-
+	
 	while True:
 		f = raw_input('>>> Enter your command: ') 
 		cmd = f.split()
+
 		if cmd[0] == 'SET':
 			data.SET(cmd[1],str(cmd[2]))
 		elif cmd[0] == 'GET':
