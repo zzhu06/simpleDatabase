@@ -101,11 +101,29 @@ class Simpletables:
 
 # Test cases 
 # Need to improve: StdIn 
+
+#['SET','GET','UNSET','END','NUMEQUALTO','BEGIN','ROLLBACK','COMMIT']: 
+
 if __name__ == "__main__":
 	data = Simpletables()
 	f = open('Example0.txt','r')
 	for line in f: 
-		commend = line.split()
-		if commend[0] in ['SET','GET','UNSET','END','NUMEQUALTO','ROLLBACK','COMMIT']: 
-			
+		cmd = line.split()
+		#print cmd
+		if cmd[0] == 'SET':
+			data.SET(cmd[1],str(cmd[2]))
+		elif cmd[0] == 'GET':
+			data.GET(cmd[1])
+		elif cmd[0] == 'UNSET': 
+			data.UNSET(cmd[1])
+		elif cmd[0] == 'END': 
+			data.END()
+		elif cmd[0] == 'NUMEQUALTO': 
+			data.END()
+		elif cmd[0] == 'BEGIN': 
+			data.BEGIN()
+		elif cmd[0] == 'ROLLBACK': 
+			data.ROLLBACK()
+		elif cmd[0] == 'COMMIT': 
+			data.COMMIT()
 
