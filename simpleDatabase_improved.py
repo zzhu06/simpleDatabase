@@ -102,75 +102,10 @@ class Simpletables:
 # Test cases 
 # Need to improve: StdIn 
 if __name__ == "__main__":
-	'''
-	#Ex. 5
 	data = Simpletables()
-	data.SET('a',10)
-	data.BEGIN()
-	data.NUMEQUALTO(10)
-	data.UNSET('a')
-	data.NUMEQUALTO(10)
-	data.ROLLBACK()
-	data.NUMEQUALTO(10)
-	data.COMMIT()
-	data.END()
-	
-	# Ex. 4
-	data = Simpletables()
-	data.SET('a',50)
-	data.BEGIN()
-	data.GET('a') 
-	data.SET('a',60)
-	data.BEGIN()
-	data.UNSET('a')
-	data.GET('a') 
-	data.ROLLBACK()
-	data.GET('a')
-	data.COMMIT()
-	data.GET('a') 
-	data.END()
-	
-	# Ex. 3
-	data = Simpletables()
-	data.BEGIN()
-	data.SET('a',30)
-	data.BEGIN()
-	data.SET('a',40)
-	data.COMMIT()
-	data.GET('a') 
-	data.ROLLBACK()
-	data.END()
-	
-	# Ex. 2
-	data = Simpletables()
-	data.BEGIN()
-	data.SET('a',10)
-	data.GET('a')
-	data.BEGIN()
-	data.SET('a',20)
-	data.GET('a') 
-	data.ROLLBACK()
-	data.GET('a')
-	data.ROLLBACK()
-	data.GET('a')
-	data.END()
+	f = open('Example0.txt','r')
+	for line in f: 
+		commend = line.split()
+		if commend[0] in ['SET','GET','UNSET','END','NUMEQUALTO','ROLLBACK','COMMIT']: 
+			
 
-	# Ex. 1
-	data = Simpletables()
-	data.SET('a',10)
-	data.SET('b',10)
-	data.NUMEQUALTO(10)
-	data.NUMEQUALTO(20)
-	data.SET('b',30)
-	data.NUMEQUALTO(10)
-	data.END()
-
-	# Ex. 0
-	data = Simpletables()
-	data.SET('a',10)
-	data.GET('a')
-	data.UNSET('a')
-	data.GET('a')
-	data.END()
-	'''
-	
