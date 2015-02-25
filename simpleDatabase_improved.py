@@ -89,7 +89,10 @@ class Simpletables:
 				self.tables[name] = self.transaction[0][name]
 
 			# change the counting number when Rollback 
-			self.count[self.tables[name]] += 1
+			if self.tables[name] not in self.count:
+				self.count[self.tables[name]] = 0
+			else: 
+				self.count[self.tables[name]] += 1
 
 			# delete the recent transaction
 			self.transaction.pop(0)
@@ -106,10 +109,9 @@ class Simpletables:
 
 if __name__ == "__main__":
 	data = Simpletables()
-	f = open('Example0.txt','r')
+	f = open('Example5.txt','r')
 	for line in f: 
 		cmd = line.split()
-		#print cmd
 		if cmd[0] == 'SET':
 			data.SET(cmd[1],str(cmd[2]))
 		elif cmd[0] == 'GET':
@@ -119,11 +121,13 @@ if __name__ == "__main__":
 		elif cmd[0] == 'END': 
 			data.END()
 		elif cmd[0] == 'NUMEQUALTO': 
-			data.END()
+			data.NUMEQUALTO(cmd[1])
 		elif cmd[0] == 'BEGIN': 
 			data.BEGIN()
 		elif cmd[0] == 'ROLLBACK': 
 			data.ROLLBACK()
 		elif cmd[0] == 'COMMIT': 
 			data.COMMIT()
+		else: 
+			print 'Invalid Command'
 
