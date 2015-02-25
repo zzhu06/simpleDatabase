@@ -1,64 +1,84 @@
+'''
+******************************************** 
+Code challenge from Thumbtack 
+Implement an in-memory database
+********************************************
+'''
 
-#stdin; shell
+# original version: simple and clean code but has linear time in NUMEQUALTO
+
+# remaining problem: stdin; shell; EOF
 
 class SimpleDatabase: 
 
+	# Initialize the database 
 	def __init__(self):
-		# table has the current value of names 
-		# transaction records the value of name from last time 
-		self.table = {}
+		# store paris of names and values 
+		# store list of historial trasactions 
+		self.tables = {}
 		self.transaction = []
 
-	def SET(self, name, value): 
+	# Set the variable name to the value
+	def SET(self, name, value):  
+		# record the most RECENT value of the name 
+		# this is for convinience of the ROLLBACK function
 		if self.transaction:
-			if name not in self.table: 
+			if name not in self.tables: 
 				self.transaction[0][name] = 'NULL'
 			else: 
-				self.transaction[0][name] = self.table[name]
+				self.transaction[0][name] = self.tables[name]
 
-		self.table[name] = value 
+		self.tables[name] = value 
 
+	# Get the value of the name
 	def GET(self, name):
-		if name not in self.table:
+		if name not in self.tables:
 			print 'NULL'
 		else: 
-			print self.table[name]
+			print self.tables[name]
 
+	# Unset the name 
 	def UNSET(self, name):
-		# if inside of a transaction, record the value befroe unset
+		# change the historial value when unset  
 		if self.transaction:
-			self.transaction[0][name] = self.table[name]
-		self.table[name] = 'NULL'
+			self.transaction[0][name] = self.tables[name]
 
-	# How to test the end of the program; import sys; sys.exit()
+		self.tables[name] = 'NULL'
+
+	# Exit the program
 	def END(self):
 		exit()
 
-	# Improve to Log(N) worst time; Sorting and binary search?  
+	# Count the number of variables
+	# Linear time; can improve by using extra space 
 	def NUMEQUALTO(self, value):
 		count = 0 
-		for i in self.table.values(): 
+		for i in self.tables.values(): 
 			if i == value: 
 				count += 1 
 		print count 
 
-	# BEGIN a new transaction
+	# Open a new transaction block 
 	def BEGIN(self):
 		self.transaction.insert(0,{})
 
+	# Undo all of the commands in the recent transaction 
 	def ROLLBACK(self):
 		if self.transaction == []:
-			print 'NO TRANSACTION'
+			print 'NO transaction'
 		else: 
+			# reset the value of the name in tables
 			for name in self.transaction[0]: 
-				self.table[name] = self.transaction[0][name]
+				self.tables[name] = self.transaction[0][name]
+			# delete the recent transaction
 			self.transaction.pop(0)
 
+	# Close all transaction blocks
+	# Set the transaction to an empty list
 	def COMMIT(self):
 		self.transaction = []
-
-	# Part II: transaction block? 	
-
+	
+# Test cases 
 if __name__ == "__main__":
 	'''
 	#Ex. 5
