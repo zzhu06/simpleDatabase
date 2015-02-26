@@ -98,15 +98,13 @@ class SimpleDatabase:
 # Testing starts here 
 if __name__ == "__main__":
 
-	data = SimpleDatabase()
-	#cmd = sys.stdin.readline()
-
 	print 'Welcome to Julia\'s SimpleDatabase'
-	
-	while True:
-		f = raw_input('>>> Enter your command: ') 
-		cmd = f.split()
 
+	data = SimpleDatabase()
+	line = sys.stdin.readline().strip()
+	
+	while line:
+		cmd = line.split(' ')
 		if cmd[0] == 'SET':
 			data.SET(cmd[1],str(cmd[2]))
 		elif cmd[0] == 'GET':
@@ -125,6 +123,8 @@ if __name__ == "__main__":
 			data.COMMIT()
 		else: 
 			print 'Invalid Command'
+
+		line = sys.stdin.readline().strip()
 
 ##### Instructions for compiling from the command line #####
 # Find the right directory, enter: python simpleDatabse.py 
